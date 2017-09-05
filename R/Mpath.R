@@ -664,12 +664,21 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   }
   
   cc_num <- as.character(clusters[km_c=="Landmark clusters","ct"])
+  print(paste0("Number of landmark clusters ", cc_num))
+  
+  browser()
+  
   ct_cc <- ct[ct %in% cc_num]
   cc <- data.frame(cell=names(ct_cc),cluster=ct_cc)
   cc$true_group <- sample[as.character(cc$cell),"GroupID"]
   count <- table(cc$cluster,cc$true_group)
   num_name <- data.frame(num=vector(length=length(cc_num)),name=vector(length=length(cc_num)))
-  for(i in 1:nrow(count)){
+  
+  if(nrow(count) == 0) {
+    warning("No landmarks selected!! (added by Wouter as extra check)")
+  }
+  
+  for(i in seq_len(nrow(count))){
     num_name$num[i] <- rownames(count)[i]
     num_name$name[i] <- colnames(count)[order(count[i,],decreasing=TRUE)[1]]
   }
@@ -1356,15 +1365,4 @@ subplot <- function(fun, x, y=NULL, size=c(1,1), vadj=0.5, hadj=0.5,
   tmp.par <- par(no.readonly=TRUE)
   
   return(invisible(tmp.par))
-}
-
-#' @import org.Hs.eg.db
-ensembl2symbol <- function(inputfile="bbCellsOnly_T0_1_T24_8_T48_10_T72_13regressionSignificant_padj0.05.txt"){
-  library(org.Hs.eg.db)
-  
-  input <- read.table(inputfile,sep="\t",header=T)
-  input$ensembl <- sapply(input[,1],FUN=function(x) strsplit(as.character(x),"\\.")[[1]][1])
-  input$entrezID <- sapply(as.character(input$ensembl),FUN=function(x) mget(x,org.Hs.egENSEMBL2EG,ifnotfound=NA)[[1]][1])
-  input$symbol <- sapply(as.character(input$entrezID),FUN=function(x) if(!is.na(x)) mget(x,org.Hs.egSYMBOL,ifnotfound=NA)[[1]][1] else NA)
-  write.table(input,paste("Annotated_",inputfile,sep=""),sep="\t",row.names=F,quote=F)
 }
