@@ -664,10 +664,6 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   }
   
   cc_num <- as.character(clusters[km_c=="Landmark clusters","ct"])
-  print(paste0("Number of landmark clusters ", cc_num))
-  
-  browser()
-  
   ct_cc <- ct[ct %in% cc_num]
   cc <- data.frame(cell=names(ct_cc),cluster=ct_cc)
   cc$true_group <- sample[as.character(cc$cell),"GroupID"]
@@ -1352,7 +1348,7 @@ subplot <- function(fun, x, y=NULL, size=c(1,1), vadj=0.5, hadj=0.5,
     
     xy <- cnvrt.coords(x,y,'plt')$fig
   } else {
-    xy <- cnvrt.coords(xy,,'usr')$fig
+    xy <- cnvrt.coords(xy,'usr')$fig
   }
   
   par(pars)
