@@ -384,7 +384,7 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
        }
     }
     
-    write.table(data.frame(gene=names(gene_cluster),cluster=gene_cluster),paste(baseName,"_gene_cluster.txt",sep=""),sep="\t",row.names=F)
+    
   }
 }
 
@@ -423,7 +423,7 @@ nbor_order <- function(exprs, ccFile,
   for(i in 1:length(nbor_res)){
     order <- c(order,nbor_res[[i]]$order)
   } 
-  write.table(order,paste(paste(lm_order,collapse="_"),"_order.txt",sep=""),sep="\t",col.names=F,row.names=F)
+  
   return(order)
 }
 
@@ -467,7 +467,7 @@ vgam_deg <- function(exprs="TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
   res <- data.frame(p=p,p.adj=p.adj)
   deg <- res[res$p.adj<0.05,]
   
-  write.table(deg,paste(paste(lm_order,collapse="_"),"_vgam_deg",p_threshold,".txt",sep=""),sep="\t",col.names=NA)
+  
   return(deg)
 }
 
@@ -683,7 +683,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   cc$landmark_cluster <- paste(cc$name,cc$cluster,sep="_")
   
   if(saveRes){
-    write.table(cc[,c("cell","landmark_cluster")],paste(baseName,"_landmark_cluster.txt",sep=""),sep="\t",row.names=F)
+    
   }
   
   
@@ -750,7 +750,7 @@ build_network <- function(exprs, landmark_cluster, distMethod = "euclidean", bas
   log2exprs <- apply(exprs,c(1,2),function(x) if(x>1) log2(x) else 0)
   
   lm <- generate_lm(landmark_cluster=landmark_cluster,log2exprs)
-  neighbor_network <- transition(log2exprs, lm, writeRes=TRUE, ifPlot=TRUE, textSize=30, baseName=baseName, distMethod = distMethod)
+  neighbor_network <- transition(log2exprs, lm, 
   return(neighbor_network) 
 }
 
@@ -771,11 +771,11 @@ generate_lm <- function(landmark_cluster = "canonical_cluster.txt",log2exprs){
 # distMethod can be one of "pearson", "kendall", "spearman" or "euclidean"
 
 #' @importFrom igraph graph.adjacency
-transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize = 30, baseName, distMethod = "euclidean"){
+transition <- function(log2exprs, lm, 
   library(igraph)
   
   nb <- apply(log2exprs,2,function(x) neighbor(x,lm,distMethod=distMethod))
-  write.table(t(nb),paste(baseName,"_neighbors_in_order.txt",sep=""),sep="\t")
+  
   row.names(nb) <- paste("neighbor",1:nrow(nb),sep="")
   nb12 <- table(nb["neighbor1",],nb["neighbor2",])
   
@@ -795,8 +795,8 @@ transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize =
   }
   nb12 <- nb12[rownames(lm),rownames(lm)]
   
-  if(writeRes){
-    write.table(nb12,paste(baseName,"_NearestNeighbor_landMarks.txt",sep=""),sep="\t",col.names=NA)
+  if(
+    
     if(ifPlot){
       library(igraph)
       nn <- read.table(paste(baseName,"_NearestNeighbor_landMarks.txt",sep=""), row.names = 1, header = TRUE,check.names=F)
@@ -839,7 +839,7 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     plot(network, vertex.size=textSize, vertex.color="lightgrey")
     dev.off()  
     
-    write.table(bb,paste(baseName,"_state_transition_mst.txt",sep=""),sep="\t",col.names=NA)
+    
     return(bb)
     
   }else if(method=="TrimNet"){
@@ -897,7 +897,7 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     #pdf(paste(baseName,"_state_transition_backbone_draf_TrimNet_fat.pdf",sep=""))
     #plot(network,vertex.size=textSize)
     #dev.off()  
-    #write.table(bb,paste(baseName,"_state_transition_backbone_draf_TrimNet_fat.txt",sep=""),sep="\t",col.names=NA)
+    #
     
     bb_thin <- apply(bb>0,c(1,2),sum)
     network <- graph.adjacency(as.matrix(bb_thin))
@@ -906,7 +906,7 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     set.seed(3);    
     plot(network, vertex.size=textSize, vertex.color="lightgrey", vertex.label.color="black", vertex.label.cex=0.8,edge.arrow.size = 0.5)
     dev.off()
-    write.table(bb_thin,paste(baseName,"_state_transition_TrimNet.txt",sep=""),sep="\t",col.names=NA)
+    
     
     return(bb_thin)
   } 
