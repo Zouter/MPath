@@ -17,9 +17,9 @@ SC_hc <- function(dataFile,baseName,cuttree_k=4){
   log2rpkm <- log2rpkm[which(rowmax>0),]
   
   hc <- hclust(dist(t(log2rpkm)),method="ward")
-  pdf(paste(baseName,"_hc.pdf",sep=""),width=22)
+  #pdf(paste(baseName,"_hc.pdf",sep=""),width=22)
   plot(hc)
-  dev.off()
+  #dev.off()
   
   memb <- cutree(hc, k = cuttree_k)  
   write.table(memb,paste(baseName,"_hc_cell_cluster.txt",sep=""),sep="\t")
@@ -110,7 +110,7 @@ SC_hc_colorCode <- function(dataFile,baseName=NULL,cuttree_k=NULL,sampleFile=NUL
    }   
 
 
-   pdf(paste(baseName,"_hc.pdf",sep=""),width=width,height=height)
+   #pdf(paste(baseName,"_hc.pdf",sep=""),width=width,height=height)
    par(oma = c(1, 1, 1, 5))
    plot(d.den)
    if(!is.null(sampleFile)){
@@ -119,7 +119,7 @@ SC_hc_colorCode <- function(dataFile,baseName=NULL,cuttree_k=NULL,sampleFile=NUL
         legend("bottomright",legend=unique(memb),col=as.character(unique(sample[,"color_cutree"])),pch=20,bty="n")
       }
    }
-   dev.off()
+   #dev.off()
 }
 
 #SC_hc_colorCode(dataFile="RPKM_CD11c+1c+DC.txt",baseName="includeOutlier_withoutgeneQC",cuttree_k=2,colorFile="outlier_color.txt")
