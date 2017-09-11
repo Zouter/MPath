@@ -336,30 +336,30 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
   dist2 <- function(x)  as.dist(1-cor(t(x), method="pearson"))
 
   if(is.null(num_gene_cluster)){
-    pdf(paste(baseName,"_heatmap.pdf",sep=""),height=hm_height,width=hm_width)
+    #pdf(paste(baseName,"_heatmap.pdf",sep=""),height=hm_height,width=hm_width)
     par(oma = c(5, 1, 1, 1))
     hm <- heatmap.2(as.matrix(log2exprs_z),col=bluered,breaks=seq(-2,2,0.1),trace="none",density="none",scale="none",margins = c(8,8),ColSideColors=group_color,keysize=1,dendrogram="row",Colv=FALSE,distfun=dist2,hclustfun=hclust2)
     par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
     plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
     legend("bottom",legend=unique(cell_annotation[cell_order,1]),pch=15,col=unique(group_color), bty = "n")
-    dev.off()
+    #dev.off()
   }else{
     hm <- heatmap.2(as.matrix(log2exprs_z),col=bluered,breaks=seq(-2,2,0.1),trace="none",density="none",scale="none",margins = c(8,8),ColSideColors=group_color,keysize=1,dendrogram="row",Colv=FALSE,distfun=dist2,hclustfun=hclust2)
     gene_cluster <- cutree(as.hclust(hm$rowDendrogram),k=num_gene_cluster)
     my_palette <- brewer.pal(num_gene_cluster,"Set2")
     gene_color <- my_palette[gene_cluster]
-    pdf(paste(baseName,"_heatmap.pdf",sep=""),height=hm_height,width=hm_width) 
+    #pdf(paste(baseName,"_heatmap.pdf",sep=""),height=hm_height,width=hm_width) 
     par(oma = c(5, 1, 1, 1))
     heatmap.2(as.matrix(log2exprs_z),col=bluered,breaks=seq(-2,2,0.1),trace="none",density="none",scale="none",margins = c(8,8),RowSideColors=gene_color,ColSideColors=group_color,keysize=1,dendrogram="row",Colv=FALSE,distfun=dist2,hclustfun=hclust2)
     par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
     plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
     legend("bottomleft",legend=unique(cell_annotation[cell_order,1]),pch=15,col=unique(group_color),bty = "n")
     legend("bottomright",legend=unique(gene_cluster),pch=15,col=unique(gene_color), bty = "n")
-    dev.off()
+    #dev.off()
     
     log2exprs_gene_cluster <- aggregate(log2exprs,list(gene_cluster=gene_cluster),mean)
     if(is.null(n_linechart)){
-       pdf(paste(baseName,"_linechart.pdf",sep=""))
+       #pdf(paste(baseName,"_linechart.#pdf",sep=""))
        par(oma = c(2,2,2,2))
        plot(lowess(t(log2exprs_gene_cluster[log2exprs_gene_cluster$gene_cluster==1,])~c(1:ncol(log2exprs_gene_cluster)),f=1/5), col=my_palette[1], lwd=3, type = "l", bty = "n", ylim=c(min(log2exprs_gene_cluster[,cell_order]),max(log2exprs_gene_cluster[,cell_order])), xlab="Cell no in order", ylab="log2TPM")
        for(i in 2:num_gene_cluster){
@@ -368,10 +368,10 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
        par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
        plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
        legend("topright",legend=unique(gene_cluster),pch=15,col=unique(gene_color), bty = "n")    
-       dev.off()
+       #dev.off()
     }else{
        for(k in 1:length(n_linechart)){
-         pdf(paste(baseName,"_linechart","_order",k,".pdf",sep=""))
+         ##pdf(paste(baseName,"_linechart","_order",k,".#pdf",sep=""))
          par(oma = c(2,2,2,2))
          plot(lowess(t(log2exprs_gene_cluster[log2exprs_gene_cluster$gene_cluster==1,n_linechart[[k]]])~c(1:length(n_linechart[[k]])),f=1/5), col=my_palette[1], lwd=3, type = "l", bty = "n", ylim=c(min(log2exprs_gene_cluster[,cell_order]),max(log2exprs_gene_cluster[,cell_order])), xlab="Cell no in order", ylab="log2TPM")
          for(i in 2:num_gene_cluster){
@@ -380,11 +380,11 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
          par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
          plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
          legend("topright",legend=unique(gene_cluster),pch=15,col=unique(gene_color), bty = "n")    
-         dev.off()
+         #dev.off()
        }
     }
     
-    
+    write.table(data.frame(gene=names(gene_cluster),cluster=gene_cluster),paste(baseName,"_gene_cluster.txt",sep=""),sep="\t",row.names=F)
   }
 }
 
@@ -423,7 +423,7 @@ nbor_order <- function(exprs, ccFile,
   for(i in 1:length(nbor_res)){
     order <- c(order,nbor_res[[i]]$order)
   } 
-  
+  write.table(order,paste(paste(lm_order,collapse="_"),"_order.txt",sep=""),sep="\t",col.names=F,row.names=F)
   return(order)
 }
 
@@ -467,7 +467,7 @@ vgam_deg <- function(exprs="TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
   res <- data.frame(p=p,p.adj=p.adj)
   deg <- res[res$p.adj<0.05,]
   
-  
+  write.table(deg,paste(paste(lm_order,collapse="_"),"_vgam_deg",p_threshold,".txt",sep=""),sep="\t",col.names=NA)
   return(deg)
 }
 
@@ -557,7 +557,7 @@ find_optimal_cluster_number <- function(rpkmFile, sampleFile,
   
   myplot <- ggplot(ncluster_nlm, aes(x = ncluster, y = nlm)) + geom_point(size=8) + geom_line(linetype="longdash",size=1) + xlab("Number of clusters") + ylab("Number of landmark clusters") 
   myplot + scale_x_continuous(breaks=ncluster_nlm$ncluster) + scale_y_continuous(breaks=ncluster_nlm$nlm) + theme_bw() + theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),axis.text = element_text(size=20), axis.title=element_text(size=25))
-  ggsave(paste(name,"_ncluster_vs_nlm.pdf",sep=""),height=8,width=8)
+  ggsave(paste(name,"_ncluster_vs_nlm.#pdf",sep=""),height=8,width=8)
 }
 
 #' landmark_designation clusters cells and determines landmark clusters
@@ -628,7 +628,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   #plot(nmi_res,xlab="Number of clusters",ylab="Normalized mutual information (NMI)")
   #points(nmi_res_sort[1,],col="blue",pch=1)
   #text(optimal_cluster_num+50,optimal_nmi+0.01,labels=paste("number of clusters = ",optimal_cluster_num,", nmi=",round(optimal_nmi,digit=2),sep=""),col="blue")
-  #dev.off()
+  ##dev.off()
   
   if(is.null(numcluster)){
     ct <- cutree(hc,k=optimal_cluster_num)
@@ -683,7 +683,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   cc$landmark_cluster <- paste(cc$name,cc$cluster,sep="_")
   
   if(saveRes){
-    
+    write.table(cc[,c("cell","landmark_cluster")],paste(baseName,"_landmark_cluster.txt",sep=""),sep="\t",row.names=F)
   }
   
   
@@ -701,7 +701,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   clusters$name <- num_name[as.character(clusters$ct),"name"]
   col_palatte <- c("red","black",height=2,width=2)
   if(saveRes){
-    pdf(paste(baseName,"_landmark_cluster.pdf",sep=""))
+    #pdf(paste(baseName,"_landmark_cluster.pdf",sep=""))
     plot(clusters$Freq,clusters$diversity,xlab="Cluster size",ylab="Cluster diversity",col= col_palatte[as.factor(km_c)],pch=16,xlim=c(min(clusters$Freq)-1,max(clusters$Freq)+1),ylim=c(min(clusters$diversity)-0.1,max(clusters$diversity)+0.1))
     text(clusters$Freq,clusters$diversity-0.02, labels=clusters$name, cex= 1, adj = c(0.5,0.9))
     if(method=="diversity"){
@@ -713,7 +713,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
       abline(v=ceiling(size_cut*ncol(rpkm))+1,lty=2)
     }
     legend("topleft",legend=unique(km_c),pch=16,col= col_palatte[as.factor(unique(km_c))],bty="n")  
-    dev.off()
+    ##dev.off()
   }
   #return(data.frame(nlm=sum(km_c=="Landmark clusters"),median_size=mean(clusters[km_c=="Landmark clusters","Freq"]),median_diversity=mean(clusters[km_c=="Landmark clusters","diversity"])))
   return(cc[,c("cell","landmark_cluster")])
@@ -750,7 +750,7 @@ build_network <- function(exprs, landmark_cluster, distMethod = "euclidean", bas
   log2exprs <- apply(exprs,c(1,2),function(x) if(x>1) log2(x) else 0)
   
   lm <- generate_lm(landmark_cluster=landmark_cluster,log2exprs)
-  neighbor_network <- transition(log2exprs, lm, 
+  neighbor_network <- transition(log2exprs, lm, writeRes=TRUE, ifPlot=TRUE, textSize=30, baseName=baseName, distMethod = distMethod)
   return(neighbor_network) 
 }
 
@@ -771,11 +771,11 @@ generate_lm <- function(landmark_cluster = "canonical_cluster.txt",log2exprs){
 # distMethod can be one of "pearson", "kendall", "spearman" or "euclidean"
 
 #' @importFrom igraph graph.adjacency
-transition <- function(log2exprs, lm, 
+transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize = 30, baseName, distMethod = "euclidean"){
   library(igraph)
   
   nb <- apply(log2exprs,2,function(x) neighbor(x,lm,distMethod=distMethod))
-  
+  write.table(t(nb),paste(baseName,"_neighbors_in_order.txt",sep=""),sep="\t")
   row.names(nb) <- paste("neighbor",1:nrow(nb),sep="")
   nb12 <- table(nb["neighbor1",],nb["neighbor2",])
   
@@ -795,16 +795,16 @@ transition <- function(log2exprs, lm,
   }
   nb12 <- nb12[rownames(lm),rownames(lm)]
   
-  if(
-    
+  if(writeRes){
+    write.table(nb12,paste(baseName,"_NearestNeighbor_landMarks.txt",sep=""),sep="\t",col.names=NA)
     if(ifPlot){
       library(igraph)
       nn <- read.table(paste(baseName,"_NearestNeighbor_landMarks.txt",sep=""), row.names = 1, header = TRUE,check.names=F)
       network <- graph.adjacency(as.matrix(nn), weighted = TRUE)
-      pdf(paste(baseName,"_state_transition.pdf",sep=""),width=10,height=10)
+      #pdf(paste(baseName,"_state_transition.pdf",sep=""),width=10,height=10)
       set.seed(1234)
       plot(network, edge.label=round(E(network)$weight),vertex.size=textSize,vertex.color="lightgrey",vertex.label.color="black",vertex.label.cex=1.3,edge.label.color="black",edge.label.cex=1.3)
-      dev.off()
+      ##dev.off()
     }
   }  
   return(nb12)
@@ -835,11 +835,11 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     bb <- mst(-nb12)
     network <- graph.adjacency(as.matrix(bb))
     
-    pdf(paste(baseName,"_state_transition_mst.pdf",sep=""))
+    #pdf(paste(baseName,"_state_transition_mst.pdf",sep=""))
     plot(network, vertex.size=textSize, vertex.color="lightgrey")
-    dev.off()  
+    ##dev.off()  
     
-    
+    write.table(bb,paste(baseName,"_state_transition_mst.txt",sep=""),sep="\t",col.names=NA)
     return(bb)
     
   }else if(method=="TrimNet"){
@@ -896,17 +896,17 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     
     #pdf(paste(baseName,"_state_transition_backbone_draf_TrimNet_fat.pdf",sep=""))
     #plot(network,vertex.size=textSize)
-    #dev.off()  
-    #
+    ###dev.off()  
+    #write.table(bb,paste(baseName,"_state_transition_backbone_draf_TrimNet_fat.txt",sep=""),sep="\t",col.names=NA)
     
     bb_thin <- apply(bb>0,c(1,2),sum)
     network <- graph.adjacency(as.matrix(bb_thin))
-    pdf(paste(baseName,"_state_transition_TrimNet.pdf",sep=""))
+    #pdf(paste(baseName,"_state_transition_TrimNet.pdf",sep=""))
     #set.seed(3959)
     set.seed(3);    
     plot(network, vertex.size=textSize, vertex.color="lightgrey", vertex.label.color="black", vertex.label.cex=0.8,edge.arrow.size = 0.5)
-    dev.off()
-    
+    ##dev.off()
+    write.table(bb_thin,paste(baseName,"_state_transition_TrimNet.txt",sep=""),sep="\t",col.names=NA)
     
     return(bb_thin)
   } 
@@ -1066,12 +1066,12 @@ color_code_node_2 <- function(networkFile, rpkmFile,lmFile, geneName,baseName = 
     row.names(rpkm_g_median) <- rpkm_g_median[,1]
     rpkm_g_median <- rpkm_g_median[colnames(network_matrix),geneName]
     
-    pdf(paste(baseName,"_",geneName,".pdf",sep=""))
+    #pdf(paste(baseName,"_",geneName,".pdf",sep=""))
     if(is.null(seed)){
       set.seed(3959)
     }
     igraph_annot(adjMatrix=network_matrix,attrVec=rpkm_g_median,main=geneName)
-    dev.off()
+    ##dev.off()
   }else{     
     for(i in 1:length(geneName)){
       rpkm_g <- rpkm[geneName[i],]
@@ -1084,12 +1084,12 @@ color_code_node_2 <- function(networkFile, rpkmFile,lmFile, geneName,baseName = 
       row.names(rpkm_g_median) <- rpkm_g_median[,1]
       rpkm_g_median <- rpkm_g_median[colnames(network_matrix),geneName[i]]
       
-      pdf(paste(baseName,"_",geneName[i],".pdf",sep=""))
+      #pdf(paste(baseName,"_",geneName[i],".pdf",sep=""))
       if(is.null(seed)){
         set.seed(3959)
       }
       igraph_annot(adjMatrix=network_matrix,attrVec=rpkm_g_median,main=geneName[i])
-      dev.off()
+      #dev.off()
     }       
   }
 }
@@ -1151,7 +1151,7 @@ igraph_annot <- function(adjMatrix, attrVec, main = "", mode = "directed", xlab=
     ),
     x="right,bottom",size=c(1,.20)
   )
-  #dev.off()
+  ##dev.off()
 }
 
 
