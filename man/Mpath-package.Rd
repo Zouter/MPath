@@ -16,6 +16,7 @@ After that, Mpath sorts individual cells according to their various stages durin
 Lastly, Mpath detects genes that were differentially expressed along the single-cell trajectories and identifies candidate regulatory markers.
 }
 \examples{
+\dontrun{
 #### Install and load Mpath package
 
 install.packages("Mpath_1.0.tar.gz",repos = NULL, type="source")
@@ -254,6 +255,6 @@ heatmap_nbor(exprs = "GSE52529_fpkm_matrix_nooutliers_ANOVA_p0.05_DEG.txt",
             hm_height = 15, hm_width = 10,
             baseName = "Path12_method1orderedbackbone_progression_heatmap", 
             n_linechart = list(order1,order2))
+}
              
 }
-

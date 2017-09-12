@@ -24,9 +24,10 @@ QC_gene(rpkmFile = "TPM_monocyte_Mar2015_noOutlier.txt",
 QC_gene removes genes that have TPM values < 1 in more than 95 percent of cells in each group
 }
 \examples{
+\dontrun{
 QC_gene(rpkmFile = "TPM_MDP_CDP_preDC_Mar2015_noOutlier.txt",
         rpkmQCFile = "TPM_MDP_CDP_preDC_Mar2015_noOutlier_geneQC0.05anyGroup.txt",
         sampleFile = "sample_MDP_CDP_preDC_Mar2015_noOutlier.txt",
         threshold = 0.05,method = "any")
 }
-
+}

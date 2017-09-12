@@ -7,22 +7,23 @@
 SC_anova(inputfile, targetfile, iflog2, p_threshold, factor, baseName)
 }
 \arguments{
-\item{inputfile:}{a tab delimied file containing expression values (TPM, CPM, FPKM, etc). Columns are cells and rows are genes.}
+\item{inputfile}{a tab delimied file containing expression values (TPM, CPM, FPKM, etc). Columns are cells and rows are genes.}
 
-\item{targetfile:}{a tab delimited file indicating cell annoation with two columns. The first column indicates cell ID, the rest columns indicates cell annotations.}
+\item{targetfile}{a tab delimited file indicating cell annoation with two columns. The first column indicates cell ID, the rest columns indicates cell annotations.}
 
-\item{iflog2:}{a boolean value to indicate whether the expression values will be log2 transformed.}
+\item{iflog2}{a boolean value to indicate whether the expression values will be log2 transformed.}
 
-\item{p_threshold:}{the cutoff of p values for DEGs.}
+\item{p_threshold}{the cutoff of p values for DEGs.}
 
-\item{factor:}{column name of targetfile, indicating which column will be used as cell annotation for comparison.}
+\item{factor}{column name of targetfile, indicating which column will be used as cell annotation for comparison.}
 
-\item{baseName:}{prefix name of resulting files.}
+\item{baseName}{prefix name of resulting files.}
 }
 \description{
 SC_anova run ANOVA test to identify differentially expressed genes
 }
 \examples{
+\dontrun{
 inputfile="GSE52529_fpkm_matrix_nooutliers_geneQC0.05anyGroup.txt";
 targetfile="GSE52529_fpkm_matrix_nooutliers_ANOVA_p0.05_DEG_landmark_cluster.txt";
 baseName="GSE52529_fpkm_matrix_nooutliers_ANOVA_p0.05_DEG_landmark_cluster";
@@ -31,4 +32,4 @@ SC_anova(inputfile = inputfile,
          iflog2 = TRUE,p_threshold=0.05,factor="landmark_cluster",
          baseName = baseName)
 }
-
+}

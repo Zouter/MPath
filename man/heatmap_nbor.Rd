@@ -33,6 +33,7 @@ heatmap_nbor(exprs, cell_order, plot_genes, cell_annotation,
 heatmap_nbor plot heatmap of gene expression
 }
 \examples{
+\dontrun{
 heatmap_nbor(exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",                        
              cell_order = "CDP_2_CDP_1_preDC_9_preDC_3_order.txt", 
              plot_genes = "CDP_2_CDP_1_preDC_9_preDC_3_vgam_deg0.05.txt",
@@ -40,6 +41,5 @@ heatmap_nbor(exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
              num_gene_cluster = 6,
              hm_height = 15, hm_width = 10,
              baseName = "CDP_2_CDP_1_preDC_9_preDC_3_order_vgam_deg0.05") 
-
 }
-
+}

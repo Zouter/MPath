@@ -9,15 +9,15 @@ vgam_deg(exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt", order,
   min_expr = 1, p_threshold = 0.05)
 }
 \arguments{
-\item{exprs:}{a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows}
+\item{exprs}{a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows}
 
-\item{order:}{a vector of re-ordered cell IDs}
+\item{order}{a vector of re-ordered cell IDs}
 
-\item{lm_order:}{a vector of landmark IDs indicating along which path the cells are to be sorted}
+\item{lm_order}{a vector of landmark IDs indicating along which path the cells are to be sorted}
 
-\item{min_expr:}{a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.}
+\item{min_expr}{a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.}
 
-\item{p_threshold:}{p value cutoff for selecting differentially expressed genes.}
+\item{p_threshold}{p value cutoff for selecting differentially expressed genes.}
 }
 \value{
 deg: a list of differentially expressed genes
@@ -26,10 +26,11 @@ deg: a list of differentially expressed genes
 vgam_deg identifies genes that were differentially expressed along the re-ordered single-cell trajectories using vgam
 }
 \examples{
+\dontrun{
 deg <- vgam_deg(exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
                 order = order,
                 lm_order = c("CDP_2","CDP_1","preDC_9","preDC_3"),
                 min_expr=1,
                 p_threshold=0.05)
 }
-
+}

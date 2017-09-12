@@ -8,11 +8,13 @@ build_network(exprs, landmark_cluster, distMethod = "euclidean",
   baseName = NULL)
 }
 \arguments{
-\item{exprs:}{a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) containing cells in columns and genes in rows}
+\item{exprs}{a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) containing cells in columns and genes in rows}
 
-\item{landmark_cluster:}{a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.}
+\item{landmark_cluster}{a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.}
 
-\item{dist_method:}{the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".}
+\item{distMethod}{the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".}
+
+\item{baseName}{output directory}
 }
 \value{
 a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks
@@ -21,6 +23,7 @@ a matrix of weighted neighborhood network, column and row names are landmarks, t
 build_network constructs weighted neighborhood network
 }
 \examples{
+\dontrun{
 exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG.txt";
 baseName = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG";
 landmark = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_landmark_cluster.txt"; 
@@ -28,6 +31,5 @@ landmark = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_landmark_clust
 neighbor_network <- build_network(exprs = exprs,
                                   landmark_cluster = landmark,
                                   baseName = baseName)
-                                  
 }
-
+}

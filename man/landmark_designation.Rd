@@ -9,23 +9,23 @@ landmark_designation(rpkmFile, baseName, sampleFile, distMethod = "euclidean",
   size_cut = 0.05, saveRes = TRUE)
 }
 \arguments{
-\item{rpkmFile:}{a tab delimited txt file of expression data, containing cells in columns and genes in rows}
+\item{rpkmFile}{a tab delimited txt file of expression data, containing cells in columns and genes in rows}
 
-\item{baseName:}{a character string indicating of prefix name of resulting files}
+\item{baseName}{a character string indicating of prefix name of resulting files}
 
-\item{sampleFile:}{a tab delimited txt file of sample annotation with two columns, the first column is cell ID, the second column is group ID}
+\item{sampleFile}{a tab delimited txt file of sample annotation with two columns, the first column is cell ID, the second column is group ID}
 
-\item{dist_method:}{the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".}
+\item{distMethod}{the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".}
 
-\item{method:}{method for distinguishing landmark clusters from non-landmark clusters.method can be "kmeans" or "diversity" or "size" or "diversity_size". When method="diversity", numlm needs to be specified. Default is "diversity_size".}
+\item{method}{method for distinguishing landmark clusters from non-landmark clusters.method can be "kmeans" or "diversity" or "size" or "diversity_size". When method="diversity", numlm needs to be specified. Default is "diversity_size".}
 
-\item{numcluster:}{number of initial clusters}
+\item{numcluster}{number of initial clusters}
 
-\item{diversity_cut:}{the cutoff value of diversity for differentiating landmark clusters from non-landmark clusters. The diversity of a landmark cluster must be below this cutoff.}
+\item{diversity_cut}{the cutoff value of diversity for differentiating landmark clusters from non-landmark clusters. The diversity of a landmark cluster must be below this cutoff.}
 
-\item{size_cut:}{the cutoff value of size i.e. number of cells for differentiating landmark clusters from non-landmark clusters. The number of cells in a landmark cluster must be greater than this cutoff.}
+\item{size_cut}{the cutoff value of size i.e. number of cells for differentiating landmark clusters from non-landmark clusters. The number of cells in a landmark cluster must be greater than this cutoff.}
 
-\item{saveRes:}{a boolean to indicate whether to save result files}
+\item{saveRes}{a boolean to indicate whether to save result files}
 }
 \value{
 a dataframe of two columns, the first column is cell ID, the second column is the landmark cluster the cell belongs to
@@ -34,6 +34,7 @@ a dataframe of two columns, the first column is cell ID, the second column is th
 landmark_designation clusters cells and determines landmark clusters
 }
 \examples{
+\dontrun{
 rpkmFile = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG.txt";
 baseName = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG";
 sampleFile = "sample_GSE60783_noOutlier.txt";
@@ -43,6 +44,5 @@ landmark_cluster <- landmark_designation(rpkmFile = rpkmFile,
                                          method = "diversity_size",
                                          numcluster = 11, diversity_cut=0.6,
                                          size_cut=0.05)
-                                         
 }
-
+}

@@ -3,24 +3,29 @@
 #' pseudotimeplotByGenes
 #' 
 #' @param exprs a data frame or matrix of log transformed expression data, with row of cells and column of genes
+#' @param if_log2 whether exprs is log2 transformed
 #' @param cell_annotation a two column data frame of matrix annotating cells(cell ID or name) with cell types
 #' @param cell_order a vector stroing the order of cells with cell ID or name, same as appeared in row names of \code{exprs}
 #' @param plot_genes a vector storing the genes selected for plot, same as appeared in the column names of \code{exprs}, if NULL, all genes in exprs will be selected
-#' @param min_exprs the threshold for cutting of the cell expressions in regression values, values lower than this will be forced to \code{min_exprs}
+#' @param reverse_order reverse the order of the pseudotime
+#' @param min_expr the threshold for cutting of the cell expressions in regression values, values lower than this will be forced to \code{min_exprs}
 #' @param cell_size the size of cells in the plot
+#' @param plot_cols plot colours
 #' @param trend_formula the formula for regression analysis
 #' @return a object of ggplot
 #' @importFrom reshape2 melt
-#' @importFrom ggplot2 ggplot geom_point geom_line facet_wrap ylab xlab theme_bw guides theme
+#' @import ggplot2
 #' @importFrom VGAM vgam
 #' @importFrom plyr ddply
 #' @export
-#' @examples  
+#' @examples
+#' \dontrun{
 #' pseudotimePlotByGenes(exprs = "FULL.log2TPM.txt", 
 #'                       cell_annotation = "splAnnotation_outlierRemoved.txt", 
 #'                       cell_order = "uspin.PCA.0.03.seed1.txt", 
 #'                       plot_genes = "genes.txt", 
 #'                       reverse_order = TRUE, plot_cols = 3)
+#' }
 pseudotimePlotByGenes <-function(exprs, if_log2=TRUE, cell_annotation, cell_order, plot_genes=NULL, 
                                  reverse_order = FALSE, min_expr=-3, cell_size=2, plot_cols = NULL, 
                                  trend_formula="expression ~ sm.ns(Pseudotime, df=3)"){

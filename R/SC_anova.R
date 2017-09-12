@@ -1,14 +1,15 @@
 #' SC_anova run ANOVA test to identify differentially expressed genes
-#' @param inputfile: a tab delimied file containing expression values (TPM, CPM, FPKM, etc). Columns are cells and rows are genes.
-#' @param targetfile: a tab delimited file indicating cell annoation with two columns. The first column indicates cell ID, the rest columns indicates cell annotations.
-#' @param iflog2: a boolean value to indicate whether the expression values will be log2 transformed.
-#' @param p_threshold: the cutoff of p values for DEGs.
-#' @param factor: column name of targetfile, indicating which column will be used as cell annotation for comparison.
-#' @param baseName: prefix name of resulting files.
+#' @param inputfile a tab delimied file containing expression values (TPM, CPM, FPKM, etc). Columns are cells and rows are genes.
+#' @param targetfile a tab delimited file indicating cell annoation with two columns. The first column indicates cell ID, the rest columns indicates cell annotations.
+#' @param iflog2 a boolean value to indicate whether the expression values will be log2 transformed.
+#' @param p_threshold the cutoff of p values for DEGs.
+#' @param factor column name of targetfile, indicating which column will be used as cell annotation for comparison.
+#' @param baseName prefix name of resulting files.
 #' @importFrom ez ezANOVA
 #' @importFrom plyr ldply
 #' @export
 #' @examples
+#' \dontrun{
 #' inputfile="GSE52529_fpkm_matrix_nooutliers_geneQC0.05anyGroup.txt";
 #' targetfile="GSE52529_fpkm_matrix_nooutliers_ANOVA_p0.05_DEG_landmark_cluster.txt";
 #' baseName="GSE52529_fpkm_matrix_nooutliers_ANOVA_p0.05_DEG_landmark_cluster";
@@ -16,11 +17,8 @@
 #'          targetfile = targetfile,
 #'          iflog2 = TRUE,p_threshold=0.05,factor="landmark_cluster",
 #'          baseName = baseName)
-
+#' }
 SC_anova <- function(inputfile,targetfile,iflog2,p_threshold,factor,baseName){
-  library(ez);
-  library(plyr);
-  
   target <- read.table(targetfile,header=T,sep="\t")
   data <- read.table(inputfile,row.names=1,check.names=FALSE,header=T,sep="\t")
   
