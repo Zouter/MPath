@@ -8,20 +8,23 @@ color_code_node_2(networkFile, rpkmFile, lmFile, geneName, baseName = NULL,
   seed = NULL)
 }
 \arguments{
-\item{networkFile:}{a tab delimited file containing a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.}
+\item{networkFile}{a tab delimited file containing a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.}
 
-\item{rpkmFile:}{a tab delimited txt file of expression data, containing cells in columns and genes in rows}
+\item{rpkmFile}{a tab delimited txt file of expression data, containing cells in columns and genes in rows}
 
-\item{lmFile:}{a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.}
+\item{lmFile}{a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.}
 
-\item{geneName:}{gene name or a vector of gene names}
+\item{geneName}{gene name or a vector of gene names}
 
-\item{baseName:}{prefix name of resulting files}
+\item{baseName}{prefix name of resulting files}
+
+\item{seed}{the seed}
 }
 \description{
 color_code_node_2 plot state transition network in which nodes i.e. landmarks are color-coded by average expression of the given gene
 }
 \examples{
+\dontrun{
 rpkmFile="TPM_GSE60783_noOutlier.txt";
 lmFile="TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_landmark_cluster.txt";
 network="TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_state_transition_mst.txt";
@@ -32,6 +35,5 @@ color_code_node_2(networkFile=network,
                   geneName=c("Irf8","Id2","Batf3"),
                   baseName="cDC1_marker",
                   seed=NULL)
-                  
 }
-
+}

@@ -7,11 +7,12 @@
 #' @param method keep genes whose rpkm values are not less than 1 in at least 5 percent of the cells in every group, method="any": keep genes whose rpkm values are not less than 1 in at least 5 percent of the cells in any group. Default is 'any'.
 #' @export
 #' @examples
+#' \dontrun{
 #' QC_gene(rpkmFile = "TPM_MDP_CDP_preDC_Mar2015_noOutlier.txt",
 #'         rpkmQCFile = "TPM_MDP_CDP_preDC_Mar2015_noOutlier_geneQC0.05anyGroup.txt",
 #'         sampleFile = "sample_MDP_CDP_preDC_Mar2015_noOutlier.txt",
 #'         threshold = 0.05,method = "any")
-
+#' }
 QC_gene <- function(rpkmFile="TPM_monocyte_Mar2015_noOutlier.txt",
                     rpkmQCFile="TPM_monocyte_Mar2015_noOutlier_geneQC0.05perGroup.txt",
                     sampleFile="monocyte_sample_Mar2015_noOutlier.txt",threshold=0.05,method="any"){

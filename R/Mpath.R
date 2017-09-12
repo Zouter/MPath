@@ -12,6 +12,7 @@
 #' 
 #' 
 #' @examples
+#' \dontrun{
 #' #### Install and load Mpath package
 #' 
 #' install.packages("Mpath_1.0.tar.gz",repos = NULL, type="source")
@@ -250,6 +251,7 @@
 #'             hm_height = 15, hm_width = 10,
 #'             baseName = "Path12_method1orderedbackbone_progression_heatmap", 
 #'             n_linechart = list(order1,order2))
+#' }
 #'              
 #' @docType package
 #' @name Mpath-package
@@ -272,6 +274,7 @@ NULL
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 #' @examples 
+#' \dontrun{
 #' heatmap_nbor(exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",                        
 #'              cell_order = "CDP_2_CDP_1_preDC_9_preDC_3_order.txt", 
 #'              plot_genes = "CDP_2_CDP_1_preDC_9_preDC_3_vgam_deg0.05.txt",
@@ -279,18 +282,11 @@ NULL
 #'              num_gene_cluster = 6,
 #'              hm_height = 15, hm_width = 10,
 #'              baseName = "CDP_2_CDP_1_preDC_9_preDC_3_order_vgam_deg0.05") 
-#' 
-
+#' }
 heatmap_nbor <- function(exprs, cell_order, plot_genes, 
                          cell_annotation, num_gene_cluster = 4,
                          hm_height = 10, hm_width = 10, baseName, 
                          colorPalette = NULL, n_linechart=NULL){
-  library(gplots)
-  library(RColorBrewer)
-  
- # my_palette <- colorRampPalette(c("darkmagenta", "black", "orange"))
-  
-  
   if(is.character(exprs)){
     if(file.exists(exprs))
       exprs <- read.table(exprs, sep = "\t", header = T, row.names = 1, check.names = FALSE)
@@ -389,14 +385,15 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
 }
 
 #' nbor_order sorts individual cells according to their various stages during transition to resemble the landmark-to-landmark continuum
-#' @param exprs: a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows
-#' @param ccFile: a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
-#' @param lm_order: a vector of landmark IDs indicating along which path the cells are to be sorted
-#' @param if_bb_only: a boolean to indicate if only cells on backbone will be sorted. Default is FALSE
-#' @param method: 1 or 2 to indicate which method to be used for sorting. Default is 1
+#' @param exprs a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows
+#' @param ccFile a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
+#' @param lm_order a vector of landmark IDs indicating along which path the cells are to be sorted
+#' @param if_bb_only a boolean to indicate if only cells on backbone will be sorted. Default is FALSE
+#' @param method 1 or 2 to indicate which method to be used for sorting. Default is 1
 #' @return a vector of  re-orderd cell IDs
 #' @export
 #' @examples
+#' \dontrun{
 #' exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG.txt";
 #' ccFile = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_landmark_cluster.txt";
 #' order <- nbor_order(exprs = exprs,
@@ -404,8 +401,7 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
 #'                     lm_order = c("CDP_2","CDP_1","preDC_9","preDC_3"),
 #'                     if_bb_only=FALSE,
 #'                     method=1)
-#' 
-
+#' }
 nbor_order <- function(exprs, ccFile,
                        lm_order = c("CD115+CDP_1","PreDC_9","PreDC_10","PreDC_11"),
                        if_bb_only = FALSE, method = 1){
@@ -428,19 +424,21 @@ nbor_order <- function(exprs, ccFile,
 }
 
 #' vgam_deg identifies genes that were differentially expressed along the re-ordered single-cell trajectories using vgam
-#' @param exprs: a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows
-#' @param order: a vector of re-ordered cell IDs
-#' @param lm_order: a vector of landmark IDs indicating along which path the cells are to be sorted
-#' @param min_expr: a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.
-#' @param p_threshold: p value cutoff for selecting differentially expressed genes.
+#' @param exprs a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows
+#' @param order a vector of re-ordered cell IDs
+#' @param lm_order a vector of landmark IDs indicating along which path the cells are to be sorted
+#' @param min_expr a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.
+#' @param p_threshold p value cutoff for selecting differentially expressed genes.
 #' @return deg: a list of differentially expressed genes
 #' @export 
 #' @examples 
+#' \dontrun{
 #' deg <- vgam_deg(exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
 #'                 order = order,
 #'                 lm_order = c("CDP_2","CDP_1","preDC_9","preDC_3"),
 #'                 min_expr=1,
 #'                 p_threshold=0.05)
+#' }
 
 vgam_deg <- function(exprs="TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
                      order,lm_order = c("CD115+CDP_2","CD115+CDP_1","PreDC_9","PreDC_3"),
@@ -472,18 +470,18 @@ vgam_deg <- function(exprs="TPM_GSE60783_noOutlier_geneQC0.05anyGroup.txt",
 }
 
 #' vgam_perGene determines if a gene is differentially expressed along the re-ordered single-cell trajectories using vgam 
-#' @param expr: a vector of one gene's expression in different cells (ie. rpkm, TPM, fpkm)
-#' @param order: a vector of re-ordered cell IDs
-#' @param min_expr: a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.
+#' @param expr a vector of one gene's expression in different cells (ie. rpkm, TPM, fpkm)
+#' @param order a vector of re-ordered cell IDs
+#' @param min_expr a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.
 #' @return pval: p value of significance of the gene being differentially expressed
 #' @importFrom VGAM vgam
 #' @export
 #' @examples
+#' \dontrun{
 #' p_val <- vgam_perGene(expr,order,min_expr=1)
+#' }
 
 vgam_perGene <- function(expr,order,min_expr){
-  library(VGAM)
-  
   expr_order <- data.frame(expr=expr,order=order)
   full_model <- fit_fullmodel(expr_order,min_expr)
   reduced_model <- fit_reducedmodel(expr_order,min_expr)
@@ -496,8 +494,6 @@ vgam_perGene <- function(expr,order,min_expr){
 
 #' @importFrom VGAM vgam
 fit_fullmodel <- function(expr_order,min_expr){
-  library(VGAM)
-  
   tryCatch({
     full_model <- vgam(expr~s(order,3),data=expr_order,family=tobit(Lower=log2(min_expr), Upper=Inf))
     full_model
@@ -508,8 +504,6 @@ fit_fullmodel <- function(expr_order,min_expr){
 
 #' @importFrom VGAM vgam
 fit_reducedmodel <- function(expr_order,min_expr){
-  library(VGAM)
-  
   tryCatch({
     reduced_model <- vgam(expr~1,data=expr_order,family=tobit(Lower=log2(min_expr), Upper=Inf))
     reduced_model
@@ -519,30 +513,26 @@ fit_reducedmodel <- function(expr_order,min_expr){
 }
 
 #' find_optimal_cluster_number identifies the optimal number of initial cluster number by searching from min_cluster_num to max_cluster_num
-#' @param rpkmFile: a tab delimited txt file of expression data, containing cells in columns and genes in rows 
-#' @param sampleFile: a tab delimited txt file of sample annotation with two columns, the first column is cell ID, the second column is group ID
-#' @param min_cluster_num: minimum number of initial clusters
-#' @param max_cluster_num: maximum number of initial clusters
-#' @param diversity_cut: the cutoff value of diversity for differentiating landmark clusters from non-landmark clusters. The diversity of a landmark cluster must be below this cutoff.
-#' @param size_cut: the cutoff value of size i.e. number of cells for differentiating landmark clusters from non-landmark clusters. The number of cells in a landmark cluster must be greater than this cutoff.
-#' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 scale_x_continuous
-#' @importFrom ggplot2 ggsave
+#' @param rpkmFile a tab delimited txt file of expression data, containing cells in columns and genes in rows 
+#' @param sampleFile a tab delimited txt file of sample annotation with two columns, the first column is cell ID, the second column is group ID
+#' @param min_cluster_num minimum number of initial clusters
+#' @param max_cluster_num maximum number of initial clusters
+#' @param diversity_cut the cutoff value of diversity for differentiating landmark clusters from non-landmark clusters. The diversity of a landmark cluster must be below this cutoff.
+#' @param size_cut the cutoff value of size i.e. number of cells for differentiating landmark clusters from non-landmark clusters. The number of cells in a landmark cluster must be greater than this cutoff.
+#' @import ggplot2
 #' @export
 #' @examples 
+#' \dontrun{
 #' rpkmFile = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG.txt";
 #' sampleFile = "sample_GSE60783_noOutlier.txt";
 #' find_optimal_cluster_number(rpkmFile = rpkmFile,
 #'                             sampleFile = sampleFile,
 #'                             min_cluster_num = 7, max_cluster_num = 15,
 #'                             diversity_cut = 0.6, size_cut = 0.05)
-
-                             
+#' }
 find_optimal_cluster_number <- function(rpkmFile, sampleFile,
                                         min_cluster_num = 7, max_cluster_num = 13,
                                         diversity_cut = 0.6, size_cut = 0.05){
-  library(ggplot2)
-  
   name <- sub(".txt","",rpkmFile)  
   
   len <- max_cluster_num-min_cluster_num+1
@@ -561,20 +551,22 @@ find_optimal_cluster_number <- function(rpkmFile, sampleFile,
 }
 
 #' landmark_designation clusters cells and determines landmark clusters
-#' @param rpkmFile: a tab delimited txt file of expression data, containing cells in columns and genes in rows 
-#' @param baseName: a character string indicating of prefix name of resulting files
-#' @param sampleFile: a tab delimited txt file of sample annotation with two columns, the first column is cell ID, the second column is group ID
-#' @param dist_method: the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".
-#' @param method: method for distinguishing landmark clusters from non-landmark clusters.method can be "kmeans" or "diversity" or "size" or "diversity_size". When method="diversity", numlm needs to be specified. Default is "diversity_size".
-#' @param numcluster: number of initial clusters
-#' @param diversity_cut: the cutoff value of diversity for differentiating landmark clusters from non-landmark clusters. The diversity of a landmark cluster must be below this cutoff.
-#' @param size_cut: the cutoff value of size i.e. number of cells for differentiating landmark clusters from non-landmark clusters. The number of cells in a landmark cluster must be greater than this cutoff.
-#' @param saveRes: a boolean to indicate whether to save result files
+#' @param rpkmFile a tab delimited txt file of expression data, containing cells in columns and genes in rows 
+#' @param baseName a character string indicating of prefix name of resulting files
+#' @param sampleFile a tab delimited txt file of sample annotation with two columns, the first column is cell ID, the second column is group ID
+#' @param distMethod the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".
+#' @param method method for distinguishing landmark clusters from non-landmark clusters.method can be "kmeans" or "diversity" or "size" or "diversity_size". When method="diversity", numlm needs to be specified. Default is "diversity_size".
+#' @param numcluster number of initial clusters
+#' @param diversity_cut the cutoff value of diversity for differentiating landmark clusters from non-landmark clusters. The diversity of a landmark cluster must be below this cutoff.
+#' @param size_cut the cutoff value of size i.e. number of cells for differentiating landmark clusters from non-landmark clusters. The number of cells in a landmark cluster must be greater than this cutoff.
+#' @param saveRes a boolean to indicate whether to save result files
 #' @return a dataframe of two columns, the first column is cell ID, the second column is the landmark cluster the cell belongs to
-#' @import igraph
+#' @importFrom stats hclust as.dist cor dist cutree kmeans
+#' @importFrom graphics plot text abline legend 
 #' @importFrom vegan diversity
 #' @export
 #' @examples 
+#' \dontrun{
 #' rpkmFile = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG.txt";
 #' baseName = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG";
 #' sampleFile = "sample_GSE60783_noOutlier.txt";
@@ -584,15 +576,10 @@ find_optimal_cluster_number <- function(rpkmFile, sampleFile,
 #'                                          method = "diversity_size",
 #'                                          numcluster = 11, diversity_cut=0.6,
 #'                                          size_cut=0.05)
-#'                                          
-
-                                        
+#' }
 landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euclidean",
                                  method="kmeans", numcluster=NULL, diversity_cut=0.6,
                                  size_cut=0.05, saveRes=TRUE){
-  library(igraph)
-  library(vegan)
-  
   rpkm <- read.table(rpkmFile,sep="\t",header=T,row.names=1)
   log2rpkm <- apply(rpkm,c(1,2),function(x) if(x>1) log2(x) else 0)
   
@@ -607,7 +594,6 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
     data.cor<-as.dist(1-data.cor); #since the algorithm wants a distance measure, the resulting correlation is trasformed in a distance
     hc <- hclust(data.cor,method="ward")
   }
-  
   
   nmi_res <- data.frame(cluster_num=c(1:ncol(log2rpkm)),nmi=vector(length=ncol(log2rpkm)))
   for(k in 1:ncol(log2rpkm)){
@@ -720,12 +706,14 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
 }
 
 #' build_network constructs weighted neighborhood network
-#' @param exprs: a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) containing cells in columns and genes in rows
-#' @param landmark_cluster: a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
-#' @param dist_method: the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".
+#' @param exprs a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) containing cells in columns and genes in rows
+#' @param landmark_cluster a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
+#' @param distMethod the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".
+#' @param baseName output directory
 #' @return a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks
 #' @export
 #' @examples
+#' \dontrun{
 #' exprs = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG.txt";
 #' baseName = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG";
 #' landmark = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_landmark_cluster.txt"; 
@@ -733,9 +721,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
 #' neighbor_network <- build_network(exprs = exprs,
 #'                                   landmark_cluster = landmark,
 #'                                   baseName = baseName)
-#'                                   
-
-                                   
+#' }
 build_network <- function(exprs, landmark_cluster, distMethod = "euclidean", baseName = NULL){
   if(is.null(baseName)){
     if(is.character(exprs)){
@@ -770,10 +756,8 @@ generate_lm <- function(landmark_cluster = "canonical_cluster.txt",log2exprs){
 ####### infer state transition between land marks
 # distMethod can be one of "pearson", "kendall", "spearman" or "euclidean"
 
-#' @importFrom igraph graph.adjacency
+#' @importFrom igraph graph.adjacency E plot.igraph
 transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize = 30, baseName, distMethod = "euclidean"){
-  library(igraph)
-  
   nb <- apply(log2exprs,2,function(x) neighbor(x,lm,distMethod=distMethod))
   write.table(t(nb),paste(baseName,"_neighbors_in_order.txt",sep=""),sep="\t")
   row.names(nb) <- paste("neighbor",1:nrow(nb),sep="")
@@ -798,12 +782,11 @@ transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize =
   if(writeRes){
     write.table(nb12,paste(baseName,"_NearestNeighbor_landMarks.txt",sep=""),sep="\t",col.names=NA)
     if(ifPlot){
-      library(igraph)
       nn <- read.table(paste(baseName,"_NearestNeighbor_landMarks.txt",sep=""), row.names = 1, header = TRUE,check.names=F)
       network <- graph.adjacency(as.matrix(nn), weighted = TRUE)
       #pdf(paste(baseName,"_state_transition.pdf",sep=""),width=10,height=10)
       set.seed(1234)
-      plot(network, edge.label=round(E(network)$weight),vertex.size=textSize,vertex.color="lightgrey",vertex.label.color="black",vertex.label.cex=1.3,edge.label.color="black",edge.label.cex=1.3)
+      plot.igraph(network, edge.label=round(E(network)$weight),vertex.size=textSize,vertex.color="lightgrey",vertex.label.color="black",vertex.label.cex=1.3,edge.label.color="black",edge.label.cex=1.3)
       ##dev.off()
     }
   }  
@@ -811,32 +794,29 @@ transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize =
 }
 
 #' trim_net trimms the weighted neighborhood network by removing edges of lower weights
-#' @param nb12: a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks
-#' @param baseName: a character string indicating the prefix name of resulting files
-#' @param method: trimming method, method can be one of "TrimNet" or "mst". When method="TrimNet" the initial node needs to be specified. Default is "mst"
-#' @param start: starting landmark, needs to be specified when method="TrimNet".
+#' @param nb12 a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks
+#' @param baseName a character string indicating the prefix name of resulting files
+#' @param method trimming method, method can be one of "TrimNet" or "mst". When method="TrimNet" the initial node needs to be specified. Default is "mst"
+#' @param start starting landmark, needs to be specified when method="TrimNet".
+#' @param textSize the size of text
 #' @return a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.
-#' @importFrom igraph graph.adjacency
+#' @importFrom igraph graph.adjacency plot.igraph
 #' @importFrom ape mst
 #' @export
 #' @examples
+#' \dontrun{
 #' baseName = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG";
 #' trimmed_net <- trim_net(neighbor_network,textSize=30,
 #'                         baseName = baseName,
 #'                         method = "mst")
-#'                         
-
-                        
+#' }
 trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
-  library(igraph)
-  library(ape)
-
   if(method=="mst"){
     bb <- mst(-nb12)
     network <- graph.adjacency(as.matrix(bb))
     
     #pdf(paste(baseName,"_state_transition_mst.pdf",sep=""))
-    plot(network, vertex.size=textSize, vertex.color="lightgrey")
+    plot.igraph(network, vertex.size=textSize, vertex.color="lightgrey")
     ##dev.off()  
     
     write.table(bb,paste(baseName,"_state_transition_mst.txt",sep=""),sep="\t",col.names=NA)
@@ -904,7 +884,7 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     #pdf(paste(baseName,"_state_transition_TrimNet.pdf",sep=""))
     #set.seed(3959)
     set.seed(3);    
-    plot(network, vertex.size=textSize, vertex.color="lightgrey", vertex.label.color="black", vertex.label.cex=0.8,edge.arrow.size = 0.5)
+    plot.igraph(network, vertex.size=textSize, vertex.color="lightgrey", vertex.label.color="black", vertex.label.cex=0.8,edge.arrow.size = 0.5)
     ##dev.off()
     write.table(bb_thin,paste(baseName,"_state_transition_TrimNet.txt",sep=""),sep="\t",col.names=NA)
     
@@ -1018,15 +998,17 @@ transition_cor <- function(nb1,nb2,cell,nb2_x,dist_method="euclidean"){
 }
 
 #' color_code_node_2 plot state transition network in which nodes i.e. landmarks are color-coded by average expression of the given gene
-#' @param networkFile: a tab delimited file containing a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.
-#' @param rpkmFile: a tab delimited txt file of expression data, containing cells in columns and genes in rows 
-#' @param lmFile: a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
-#' @param geneName: gene name or a vector of gene names
-#' @param baseName: prefix name of resulting files
-#' @import igraph
+#' @param networkFile a tab delimited file containing a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.
+#' @param rpkmFile a tab delimited txt file of expression data, containing cells in columns and genes in rows 
+#' @param lmFile a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
+#' @param geneName gene name or a vector of gene names
+#' @param baseName prefix name of resulting files
+#' @param seed the seed
 #' @import plotrix
+#' @importFrom stats aggregate
 #' @export
 #' @examples
+#' \dontrun{
 #' rpkmFile="TPM_GSE60783_noOutlier.txt";
 #' lmFile="TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_landmark_cluster.txt";
 #' network="TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG_state_transition_mst.txt";
@@ -1037,13 +1019,8 @@ transition_cor <- function(nb1,nb2,cell,nb2_x,dist_method="euclidean"){
 #'                   geneName=c("Irf8","Id2","Batf3"),
 #'                   baseName="cDC1_marker",
 #'                   seed=NULL)
-#'                   
-
-                 
+#' }
 color_code_node_2 <- function(networkFile, rpkmFile,lmFile, geneName,baseName = NULL, seed=NULL){
-  library(igraph)
-  library(plotrix)
-  
   if(is.character(networkFile)){
     if(file.exists(networkFile)){
        network_matrix <- read.table(networkFile,sep="\t",header=T,row.names=1,check.names=F)
@@ -1094,25 +1071,19 @@ color_code_node_2 <- function(networkFile, rpkmFile,lmFile, geneName,baseName = 
   }
 }
 
-#' @importFrom igraph graph.adjacency
-#' @importFrom grDevices colorRampPalette
-#' @importFrom grDevices palette
-
+#' @importFrom igraph graph.adjacency plot.igraph layout.kamada.kawai
+#' @importFrom grDevices colorRampPalette palette
+#' @importFrom stats quantile
+#' @importFrom graphics title image
 igraph_annot <- function(adjMatrix, attrVec, main = "", mode = "directed", xlab="Expression Value",
                          palette = "bluered", layout = layout.kamada.kawai, pctile_color=c(0.02,0.98) ){  
-  library(igraph)
-  library(grDevices)
-  
   graph <- graph.adjacency(as.matrix(adjMatrix), mode=mode, weighted = TRUE, diag=FALSE)
   graph_l <- layout
   
   if (palette == "jet")
     palette <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
-  else
-    if (palette == "bluered")
-      palette <- colorRampPalette(c( "cyan", "#7FFF7F", "yellow", "#FF7F00", "red"))
-  
-  #   palette <- colorRampPalette(c("blue", "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00", "red"))
+  else if (palette == "bluered")
+    palette <- colorRampPalette(c( "cyan", "#7FFF7F", "yellow", "#FF7F00", "red"))
   else
     stop("Please use a supported color palette.  Options are 'bluered' or 'jet'") 
   if (!is.vector(pctile_color) || length(pctile_color) != 2) 
@@ -1125,7 +1096,7 @@ igraph_annot <- function(adjMatrix, attrVec, main = "", mode = "directed", xlab=
   graph$color <- color
   
   #pdf(paste(out_dir,basename(f),".",name,".pdf",sep=""))
-  plot(graph, layout = graph_l,
+  plot.igraph(graph, layout = graph_l,
        vertex.color= graph$color,
        vertex.size = 25,
        vertex.shape="circle",
@@ -1168,6 +1139,8 @@ igraph_annot <- function(adjMatrix, attrVec, main = "", mode = "directed", xlab=
 # authored by Greg Snow <greg.snow at imail.org>, and licensed under
 # the Artistic-2.0 license.
 
+#' @importFrom graphics par
+#' @importFrom grDevices xy.coords
 cnvrt.coords <- function(x,y=NULL,input=c('usr','plt','fig','dev','tdev')) {
   
   input <- match.arg(input)
@@ -1299,7 +1272,8 @@ cnvrt.coords <- function(x,y=NULL,input=c('usr','plt','fig','dev','tdev')) {
   
 }
 
-
+#' @importFrom graphics par
+#' @importFrom grDevices xy.coords
 subplot <- function(fun, x, y=NULL, size=c(1,1), vadj=0.5, hadj=0.5,
                     inset=c(0,0), type=c('plt','fig'), pars=NULL){
   

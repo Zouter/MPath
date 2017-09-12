@@ -2,13 +2,13 @@ Package: Mpath
 Type: Package
 Title: Mpath: a single-cell RNAseq data analysis algorithm that maps
         multi-branching single-cell trajectories revealing cell
-        progression during development.
+        progression during development
 Version: 1.0
 Date: 2016-02-17
 Author: Dr Jinmiao CHEN
 Maintainer: Dr Jinmiao CHEN <chen_jinmiao@immunol.a-star.edu.sg>
 Description: This package provides a new single-cell RNAseq data analysis algorithm that maps multi-branching cell developmental pathways and aligns individual cells along the continuum of developmental trajectories. Mpath computationally reconstructs cell developmental pathways as a multi-destination journey on a map of connected landmarks wherein individual cells are placed in order along the paths connecting the landmarks. To achieve that, it first identifies clusters of cells and designates landmark clusters each defines a discrete cellular state. Subsequently it identifies and counts cells that are potentially transitioning from one landmark state to the next based on transcriptional similarities. It then uses the cell counts to infer putative transitions between landmark states giving rise to a state transition network. After that, Mpath sorts individual cells according to their various stages during transition to resemble the landmark-to-landmark continuum. Lastly, Mpath detects genes that were differentially expressed along the single-cell trajectories and identifies candidate regulatory markers.
-License: What license is it under?
+License: GPL-3
 Imports:
   ape,
   ez,
@@ -22,6 +22,6 @@ Imports:
   RColorBrewer,
   vegan,
   VGAM
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Packaged: 2016-02-22 14:23:21 UTC; jinmiao
 NeedsCompilation: no

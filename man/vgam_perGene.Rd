@@ -7,11 +7,11 @@
 vgam_perGene(expr, order, min_expr)
 }
 \arguments{
-\item{expr:}{a vector of one gene's expression in different cells (ie. rpkm, TPM, fpkm)}
+\item{expr}{a vector of one gene's expression in different cells (ie. rpkm, TPM, fpkm)}
 
-\item{order:}{a vector of re-ordered cell IDs}
+\item{order}{a vector of re-ordered cell IDs}
 
-\item{min_expr:}{a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.}
+\item{min_expr}{a numeric value indicating the minimum TPM value for a gene to be considered as expressed. Default is 1.}
 }
 \value{
 pval: p value of significance of the gene being differentially expressed
@@ -20,6 +20,7 @@ pval: p value of significance of the gene being differentially expressed
 vgam_perGene determines if a gene is differentially expressed along the re-ordered single-cell trajectories using vgam
 }
 \examples{
+\dontrun{
 p_val <- vgam_perGene(expr,order,min_expr=1)
 }
-
+}

@@ -8,13 +8,15 @@ trim_net(nb12, textSize = 20, baseName = NULL, method = "mst",
   start = "MDP_6")
 }
 \arguments{
-\item{nb12:}{a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks}
+\item{nb12}{a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks}
 
-\item{baseName:}{a character string indicating the prefix name of resulting files}
+\item{textSize}{the size of text}
 
-\item{method:}{trimming method, method can be one of "TrimNet" or "mst". When method="TrimNet" the initial node needs to be specified. Default is "mst"}
+\item{baseName}{a character string indicating the prefix name of resulting files}
 
-\item{start:}{starting landmark, needs to be specified when method="TrimNet".}
+\item{method}{trimming method, method can be one of "TrimNet" or "mst". When method="TrimNet" the initial node needs to be specified. Default is "mst"}
+
+\item{start}{starting landmark, needs to be specified when method="TrimNet".}
 }
 \value{
 a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.
@@ -23,10 +25,10 @@ a matrix of trimmed state transition network, column and row names are landmarks
 trim_net trimms the weighted neighborhood network by removing edges of lower weights
 }
 \examples{
+\dontrun{
 baseName = "TPM_GSE60783_noOutlier_geneQC0.05anyGroup_CD4vsCD8DEG";
 trimmed_net <- trim_net(neighbor_network,textSize=30,
                         baseName = baseName,
                         method = "mst")
-                        
 }
-
+}

@@ -12,17 +12,23 @@ pseudotimePlotByGenes(exprs, if_log2 = TRUE, cell_annotation, cell_order,
 \arguments{
 \item{exprs}{a data frame or matrix of log transformed expression data, with row of cells and column of genes}
 
+\item{if_log2}{whether exprs is log2 transformed}
+
 \item{cell_annotation}{a two column data frame of matrix annotating cells(cell ID or name) with cell types}
 
 \item{cell_order}{a vector stroing the order of cells with cell ID or name, same as appeared in row names of \code{exprs}}
 
 \item{plot_genes}{a vector storing the genes selected for plot, same as appeared in the column names of \code{exprs}, if NULL, all genes in exprs will be selected}
 
+\item{reverse_order}{reverse the order of the pseudotime}
+
+\item{min_expr}{the threshold for cutting of the cell expressions in regression values, values lower than this will be forced to \code{min_exprs}}
+
 \item{cell_size}{the size of cells in the plot}
 
-\item{trend_formula}{the formula for regression analysis}
+\item{plot_cols}{plot colours}
 
-\item{min_exprs}{the threshold for cutting of the cell expressions in regression values, values lower than this will be forced to \code{min_exprs}}
+\item{trend_formula}{the formula for regression analysis}
 }
 \value{
 a object of ggplot
@@ -31,11 +37,11 @@ a object of ggplot
 pseudotimeplotByGenes
 }
 \examples{
- 
+\dontrun{
 pseudotimePlotByGenes(exprs = "FULL.log2TPM.txt", 
                       cell_annotation = "splAnnotation_outlierRemoved.txt", 
                       cell_order = "uspin.PCA.0.03.seed1.txt", 
                       plot_genes = "genes.txt", 
                       reverse_order = TRUE, plot_cols = 3)
 }
-
+}
