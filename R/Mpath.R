@@ -614,7 +614,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
     ct <- cutree(hc,k=k)
     
     if(sum(names(ct)!=row.names(sample))==0){
-      nmi_res[k,"nmi"] <- compare(as.factor(ct), as.factor(sample[,2]),method="nmi")
+      nmi_res[k,"nmi"] <- igraph::compare(as.factor(ct), as.factor(sample[,2]),method="nmi")
     }else{
       print("Error: the order of cells in sample.txt is different from rpkm file.\n")
     }
