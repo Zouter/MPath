@@ -5,7 +5,7 @@
 \title{build_network constructs weighted neighborhood network}
 \usage{
 build_network(exprs, landmark_cluster, distMethod = "euclidean",
-  baseName = NULL)
+  baseName = NULL, writeRes = TRUE)
 }
 \arguments{
 \item{exprs}{a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) containing cells in columns and genes in rows}
@@ -15,6 +15,8 @@ build_network(exprs, landmark_cluster, distMethod = "euclidean",
 \item{distMethod}{the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".}
 
 \item{baseName}{output directory}
+
+\item{writeRes}{Whether or not to save the output}
 }
 \value{
 a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks
