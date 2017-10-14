@@ -5,7 +5,7 @@
 \title{nbor_order sorts individual cells according to their various stages during transition to resemble the landmark-to-landmark continuum}
 \usage{
 nbor_order(exprs, ccFile, lm_order = c("CD115+CDP_1", "PreDC_9", "PreDC_10",
-  "PreDC_11"), if_bb_only = FALSE, method = 1)
+  "PreDC_11"), if_bb_only = FALSE, method = 1, writeRes = TRUE)
 }
 \arguments{
 \item{exprs}{a data frame or matrix of expression data(ie. rpkm, TPM, fpkm) or a tab delimited txt file of expression data, containing cells in columns and genes in rows}
@@ -17,6 +17,8 @@ nbor_order(exprs, ccFile, lm_order = c("CD115+CDP_1", "PreDC_9", "PreDC_10",
 \item{if_bb_only}{a boolean to indicate if only cells on backbone will be sorted. Default is FALSE}
 
 \item{method}{1 or 2 to indicate which method to be used for sorting. Default is 1}
+
+\item{writeRes}{a boolean to indicate whether to save result files}
 }
 \value{
 a vector of  re-orderd cell IDs

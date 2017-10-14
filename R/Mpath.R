@@ -390,6 +390,7 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
 #' @param lm_order a vector of landmark IDs indicating along which path the cells are to be sorted
 #' @param if_bb_only a boolean to indicate if only cells on backbone will be sorted. Default is FALSE
 #' @param method 1 or 2 to indicate which method to be used for sorting. Default is 1
+#' @param writeRes a boolean to indicate whether to save result files
 #' @return a vector of  re-orderd cell IDs
 #' @export
 #' @examples
@@ -404,7 +405,7 @@ heatmap_nbor <- function(exprs, cell_order, plot_genes,
 #' }
 nbor_order <- function(exprs, ccFile,
                        lm_order = c("CD115+CDP_1","PreDC_9","PreDC_10","PreDC_11"),
-                       if_bb_only = FALSE, method = 1){
+                       if_bb_only = FALSE, method = 1, writeRes = TRUE){
   
   if(is.character(exprs)){
     if(file.exists(exprs))
@@ -419,7 +420,9 @@ nbor_order <- function(exprs, ccFile,
   for(i in 1:length(nbor_res)){
     order <- c(order,nbor_res[[i]]$order)
   } 
-  write.table(order,paste(paste(lm_order,collapse="_"),"_order.txt",sep=""),sep="\t",col.names=F,row.names=F)
+  if (writeRes) {
+    write.table(order,paste(paste(lm_order,collapse="_"),"_order.txt",sep=""),sep="\t",col.names=F,row.names=F)
+  }
   return(order)
 }
 
@@ -581,18 +584,9 @@ find_optimal_cluster_number <- function(rpkmFile, sampleFile,
 landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euclidean",
                                  method="kmeans", numcluster=NULL, diversity_cut=0.6,
                                  size_cut=0.05, saveRes=TRUE){
-  if (is.character(rpkmFile)) {
-    rpkm <- read.table(rpkmFile,sep="\t",header=T,row.names=1)
-  } else {
-    rpkm <- rpkmFile
-  }
+  rpkm <- read.table(rpkmFile,sep="\t",header=T,row.names=1)
   log2rpkm <- apply(rpkm,c(1,2),function(x) if(x>1) log2(x) else 0)
-  
-  if (is.character(sampleFile)) {
-    sample <- read.table(sampleFile,sep="\t",header=T)
-  } else {
-    sample <- sampleFile
-  }
+  sample <- read.table(sampleFile,sep="\t",header=T)
   row.names(sample) <- sample[,1]
   sample <- sample[colnames(log2rpkm),]
   
@@ -769,7 +763,9 @@ generate_lm <- function(landmark_cluster = "canonical_cluster.txt",log2exprs){
 #' @importFrom igraph graph.adjacency E plot.igraph
 transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize = 30, baseName, distMethod = "euclidean"){
   nb <- apply(log2exprs,2,function(x) neighbor(x,lm,distMethod=distMethod))
-  write.table(t(nb),paste(baseName,"_neighbors_in_order.txt",sep=""),sep="\t")
+  if (writeRes) {
+    write.table(t(nb),paste(baseName,"_neighbors_in_order.txt",sep=""),sep="\t")
+  }
   row.names(nb) <- paste("neighbor",1:nrow(nb),sep="")
   nb12 <- table(nb["neighbor1",],nb["neighbor2",])
   
