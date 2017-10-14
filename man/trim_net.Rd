@@ -5,7 +5,7 @@
 \title{trim_net trimms the weighted neighborhood network by removing edges of lower weights}
 \usage{
 trim_net(nb12, textSize = 20, baseName = NULL, method = "mst",
-  start = "MDP_6")
+  start = "MDP_6", writeRes = TRUE)
 }
 \arguments{
 \item{nb12}{a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks}
@@ -17,6 +17,8 @@ trim_net(nb12, textSize = 20, baseName = NULL, method = "mst",
 \item{method}{trimming method, method can be one of "TrimNet" or "mst". When method="TrimNet" the initial node needs to be specified. Default is "mst"}
 
 \item{start}{starting landmark, needs to be specified when method="TrimNet".}
+
+\item{writeRes}{a boolean to indicate whether to save result files}
 }
 \value{
 a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.

@@ -16,7 +16,7 @@ build_network(exprs, landmark_cluster, distMethod = "euclidean",
 
 \item{baseName}{output directory}
 
-\item{writeRes}{Whether or not to save the output}
+\item{writeRes}{a boolean to indicate whether to save result files}
 }
 \value{
 a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks

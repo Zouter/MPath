@@ -719,7 +719,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
 #' @param landmark_cluster a data frame or matrix of two columns or a tab delimited file of landmark cluster assignment of individual cells. The first column indicates cell ID, the second column indicates the landmark cluster which the cell was assigned to.  
 #' @param distMethod the method for calculating dissimilarity between cells. distMethod can be one of "pearson", "kendall", "spearman" or "euclidean". Default is "euclidean".
 #' @param baseName output directory
-#' @param writeRes Whether or not to save the output
+#' @param writeRes a boolean to indicate whether to save result files
 #' @return a matrix of weighted neighborhood network, column and row names are landmarks, the values represent the weights of the edges connecting two landmarks
 #' @export
 #' @examples
@@ -809,6 +809,7 @@ transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize =
 #' @param method trimming method, method can be one of "TrimNet" or "mst". When method="TrimNet" the initial node needs to be specified. Default is "mst"
 #' @param start starting landmark, needs to be specified when method="TrimNet".
 #' @param textSize the size of text
+#' @param writeRes a boolean to indicate whether to save result files
 #' @return a matrix of trimmed state transition network, column and row names are landmarks, the values are 0 or 1 indicating whether the two landmarks are connected.
 #' @importFrom igraph graph.adjacency plot.igraph
 #' @importFrom ape mst
@@ -820,16 +821,19 @@ transition <- function(log2exprs, lm, writeRes = TRUE, ifPlot = TRUE, textSize =
 #'                         baseName = baseName,
 #'                         method = "mst")
 #' }
-trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
+trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6", writeRes = TRUE){
   if(method=="mst"){
     bb <- mst(-nb12)
-    network <- graph.adjacency(as.matrix(bb))
     
-    #pdf(paste(baseName,"_state_transition_mst.pdf",sep=""))
-    plot.igraph(network, vertex.size=textSize, vertex.color="lightgrey")
-    ##dev.off()  
-    
-    write.table(bb,paste(baseName,"_state_transition_mst.txt",sep=""),sep="\t",col.names=NA)
+    if (writeRes) {
+      network <- graph.adjacency(as.matrix(bb))
+      
+      #pdf(paste(baseName,"_state_transition_mst.pdf",sep=""))
+      plot.igraph(network, vertex.size=textSize, vertex.color="lightgrey")
+      ##dev.off()  
+      
+      write.table(bb,paste(baseName,"_state_transition_mst.txt",sep=""),sep="\t",col.names=NA)
+    }
     return(bb)
     
   }else if(method=="TrimNet"){
@@ -890,13 +894,17 @@ trim_net <- function(nb12,textSize=20,baseName=NULL,method="mst",start="MDP_6"){
     #write.table(bb,paste(baseName,"_state_transition_backbone_draf_TrimNet_fat.txt",sep=""),sep="\t",col.names=NA)
     
     bb_thin <- apply(bb>0,c(1,2),sum)
-    network <- graph.adjacency(as.matrix(bb_thin))
-    #pdf(paste(baseName,"_state_transition_TrimNet.pdf",sep=""))
-    #set.seed(3959)
-    set.seed(3);    
-    plot.igraph(network, vertex.size=textSize, vertex.color="lightgrey", vertex.label.color="black", vertex.label.cex=0.8,edge.arrow.size = 0.5)
-    ##dev.off()
-    write.table(bb_thin,paste(baseName,"_state_transition_TrimNet.txt",sep=""),sep="\t",col.names=NA)
+    
+    if (writeRes) {
+      network <- graph.adjacency(as.matrix(bb_thin))
+      #pdf(paste(baseName,"_state_transition_TrimNet.pdf",sep=""))
+      #set.seed(3959)
+      
+      set.seed(3);    
+      plot.igraph(network, vertex.size=textSize, vertex.color="lightgrey", vertex.label.color="black", vertex.label.cex=0.8,edge.arrow.size = 0.5)
+      ##dev.off()
+      write.table(bb_thin,paste(baseName,"_state_transition_TrimNet.txt",sep=""),sep="\t",col.names=NA)
+    }
     
     return(bb_thin)
   } 
