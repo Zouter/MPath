@@ -584,26 +584,35 @@ find_optimal_cluster_number <- function(rpkmFile, sampleFile,
 landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euclidean",
                                  method="kmeans", numcluster=NULL, diversity_cut=0.6,
                                  size_cut=0.05, saveRes=TRUE){
-  rpkm <- read.table(rpkmFile,sep="\t",header=T,row.names=1)
+  if (is.character(rpkmFile)) {
+    rpkm <- read.table(rpkmFile,sep="\t",header=T,row.names=1)
+  } else {
+    rpkm <- rpkmFile
+  }
   log2rpkm <- apply(rpkm,c(1,2),function(x) if(x>1) log2(x) else 0)
-  sample <- read.table(sampleFile,sep="\t",header=T)
+  
+  if (is.character(sampleFile)) {
+    sample <- read.table(sampleFile,sep="\t",header=T)
+  } else {
+    sample <- sampleFile
+  }
   row.names(sample) <- sample[,1]
   sample <- sample[colnames(log2rpkm),]
   
   if(distMethod=="euclidean"){
-    hc <- hclust(dist(t(log2rpkm)),method="ward.D")
-  }else{
-    data.cor<-cor(log2rpkm,method=distMethod);
-    data.cor<-as.dist(1-data.cor); #since the algorithm wants a distance measure, the resulting correlation is trasformed in a distance
-    hc <- hclust(data.cor,method="ward.D")
+    hc <- stats::hclust(stats::dist(t(log2rpkm)),method="ward.D")
+  } else {
+    data.cor <- stats::cor(log2rpkm,method=distMethod);
+    data.cor <- stats::as.dist(1-data.cor); #since the algorithm wants a distance measure, the resulting correlation is trasformed in a distance
+    hc <- stats::hclust(data.cor,method="ward.D")
   }
   
   nmi_res <- data.frame(cluster_num=c(1:ncol(log2rpkm)),nmi=vector(length=ncol(log2rpkm)))
   for(k in 1:ncol(log2rpkm)){
-    ct <- cutree(hc,k=k)
+    ct <- stats::cutree(hc,k=k)
     
     if(sum(names(ct)!=row.names(sample))==0){
-      nmi_res[k,"nmi"] <- compare(as.factor(ct), as.factor(sample[,2]),method="nmi")
+      nmi_res[k,"nmi"] <- igraph::compare(as.factor(ct), as.factor(sample[,2]),method="nmi")
     }else{
       print("Error: the order of cells in sample.txt is different from rpkm file.\n")
     }
@@ -626,7 +635,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   }
   
   clusters <- data.frame(table(ct))  
-  clusters$diversity <- diversity(t(table(sample[,2],ct)), index = "shannon")
+  clusters$diversity <- vegan::diversity(t(table(sample[,2],ct)), index = "shannon")
   if(method=="kmeans"){
     km <- kmeans(clusters[,2:3],2)
     km_c <- km$cluster
