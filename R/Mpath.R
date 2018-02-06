@@ -637,7 +637,14 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
   clusters <- data.frame(table(ct))  
   clusters$diversity <- vegan::diversity(t(table(sample[,2],ct)), index = "shannon")
   if(method=="kmeans"){
-    km <- kmeans(clusters[,2:3],2)
+    if (nrow(clusters) <= 2) {
+      km <- list(
+        cluster = c(1,2),
+        center = clusters[,2:3]
+      )
+    } else {
+      km <- kmeans(clusters[,2:3],2)
+    }
     km_c <- km$cluster
     km_center <- km$center
     if(km_center[1,1]>km_center[2,1] & km_center[1,2]>km_center[2,2]){
