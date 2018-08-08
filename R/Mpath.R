@@ -617,6 +617,7 @@ landmark_designation <- function(rpkmFile, baseName, sampleFile, distMethod="euc
       print("Error: the order of cells in sample.txt is different from rpkm file.\n")
     }
   }
+  nmi_res <- nmi_res[-1, , drop = FALSE] # remove k=1
   
   nmi_res_sort <- nmi_res[order(nmi_res$nmi,decreasing=TRUE),]  
   optimal_cluster_num <- nmi_res_sort[1,"cluster_num"]
